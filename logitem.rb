@@ -21,7 +21,7 @@ class LogItem
     Time.at(@time.to_i)
   end
   def time_print(zone=nil)
-    puts self.date_time(zone)
+    puts self.date()
     #puts time
   end
 end

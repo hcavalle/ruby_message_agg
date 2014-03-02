@@ -1,5 +1,6 @@
 require_relative 'logitem'
 require_relative 'log'
+require_relative 'chatlog'
 require 'test/unit'
 require 'date'
 
@@ -33,7 +34,8 @@ class LogItemTest < TestChatLog #Test::Unit::TestCase
     data = $time2
     @item.set(time, data)
 
-    assert_equal @item.time, time
+    assert_equal @item.time, Time.at(time.to_i)
+    assert_equal @item.date, DateTime.strptime(time,'%s')
     assert_equal @item.data, data
   end
 end
@@ -68,3 +70,24 @@ class LogTest < TestChatLog
   end
 end
 
+class ChatLogTest < LogTest
+  attr :chatlog
+
+  def init_chat_log
+    @item1 = LogItem.new($time1, $data1)
+    @item2 = LogItem.new($time2, $data2)
+    @chatlog = ChatLog.new(@item1, @item2)
+  end
+  def test_seed
+    self.init_chat_log
+    @chatlog.seed_data
+    assert_kind_of LogItem, @chatlog.log_item_list.first
+  end
+  def test_agg
+    self.init_chat_log
+    @chatlog.agg_items_by_time('minute')
+    assert_kind_of LogItem, @chatlog.agg_items.first
+    assert_equal @chatlog.agg_items.first.data['comment'], 1
+    assert_output { @chatlog.print_agg_items }
+  end
+end
