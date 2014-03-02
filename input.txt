@@ -1,0 +1,7 @@
+5pm: Bob enters the room
+5:05pm: Kate enters the room
+5:15pm: Bob comments: "Hey, Kate - high five?"
+5:17pm: Kate high-fives Bob
+5:18pm: Bob leaves
+5:20pm: Kate comments: "Oh, typical"
+5:21pm: Kate leaves

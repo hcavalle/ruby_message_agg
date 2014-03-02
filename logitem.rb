@@ -14,13 +14,14 @@ class LogItem
     @time = time
     @data = data
   end
-  def time_print(zone='utc')
-    if zone == 'utc'
-      puts time
-      time = DateTime.strptime(@time,'%s')
-    else
-      time = Time.at(@time.to_i).to_datetime
-    time
-    end
+  def date()
+    DateTime.strptime(@time,'%s')
+  end
+  def time()
+    Time.at(@time.to_i)
+  end
+  def time_print(zone=nil)
+    puts self.date_time(zone)
+    #puts time
   end
 end

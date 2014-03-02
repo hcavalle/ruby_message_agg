@@ -63,7 +63,7 @@ class LogTest < TestChatLog
   end
   def test_print_log
     self.init_log_list
-    message = ""
+    #message = ""
     assert_output { @_log.print_log }
   end
 end

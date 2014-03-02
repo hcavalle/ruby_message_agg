@@ -4,9 +4,11 @@ class Log
 
   def initialize(*args)
     @log_item_list = [*args] 
+    @log_item_list.sort
   end
   def log_item_list=(items)
     @log_item_list =  items
+    @log_item_list.sort
   end
   def log_item_list
     @log_item_list
@@ -14,9 +16,9 @@ class Log
   def log_item(item)
     @log_item_list.push(item)
   end
-  def print_log(granular=nil)
+  def print_log(unit=nil)
     @log_item_list.each do |item|
-      puts item.time 
+      puts item.time_print #+ ": "
       item.data.each { |text| puts " #{text} "}
     end
   end
