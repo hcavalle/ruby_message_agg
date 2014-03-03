@@ -35,7 +35,7 @@ class LogItemTest < TestChatLog #Test::Unit::TestCase
     @item.set(time, data)
 
     assert_equal @item.time, Time.at(time.to_i)
-    assert_equal @item.date, DateTime.strptime(time,'%s')
+    #assert_equal @item.date, DateTime.strptime(time,'%s')
     assert_equal @item.data, data
   end
 end
@@ -82,6 +82,12 @@ class ChatLogTest < LogTest
     self.init_chat_log
     @chatlog.seed_data
     assert_kind_of LogItem, @chatlog.log_item_list.first
+  end
+  def test_set_unit_time
+    self.init_chat_log
+    assert_equal 60, @chatlog.set_time_agg('minute') 
+    assert_equal 60*60, @chatlog.set_time_agg('hour') 
+    assert_equal 60*60*24, @chatlog.set_time_agg('day') 
   end
   def test_agg
     self.init_chat_log

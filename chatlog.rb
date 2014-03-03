@@ -1,6 +1,7 @@
 class ChatLog < Log
   attr :agg_items
-  chat_events = ["enter-room" => "person(s) entered room", "leave-room"=> "person(s) left the room", "comment"=>"comments", "high-five"=>"high fives between users"]
+  $chat_events = {"enter-room" => "person(s) entered room", "leave-room"=> "person(s) left the room", "comment"=>"comments", "high-five"=>"high fives between users"}
+  $units_time = ["minute"=> 60, "hour"=> 60*60, "day" => 60*60*24]
 
   def seed_data
     #from db
@@ -19,6 +20,8 @@ class ChatLog < Log
   end
 
   def agg_items_by_time(unit='minute')
+    self.seed_data unless @log_item_list
+
     if unit 
       @agg_items = []
       time_agg = set_time_agg(unit)
@@ -26,35 +29,49 @@ class ChatLog < Log
       return nil
     end
 
-    cur_agg_item = @log_item_list.first
-    @log_item_list.each do |item|
-      if time_agg
-        next_time = item.time
-        if next_time - cur_agg_item.time > time_agg
-          @agg_items.push(cur_agg_item)
-          cur_agg_item = item
-          puts cur_agg_item.time #+ ": "
+    cur_agg_item = LogItem.new
+    cur_agg_item.time= @log_item_list.first.time
+    if cur_agg_item.time
+      @log_item_list.each do |item|
+        if time_agg
+          if item.time - cur_agg_item.time > time_agg
+            @agg_items.push(cur_agg_item)
+            cur_agg_item.time= item.time
+            puts cur_agg_item.time #+ ": "
+          end
+          if cur_agg_item.data[item.data["event"]].instance_of? Integer  
+            cur_agg_item.data[item.data["event"]]+= 1 
+          else 
+            cur_agg_item.data[item.data["event"]]= 1
+          end
         end
-          cur_agg_item.data[item.data["event"]]+= 1
       end
     end
+    @agg_items.push(cur_agg_item)
   end
   def set_time_agg(unit)
+    val = nil
     if unit == 'minute'
-      60
-    else if unit == 'hour'
-      60*60
-    else if unit == 'day'
-      60*60*24
+      val = 60
+    elsif unit == 'hour'
+      val = 60*60
+    elsif unit == 'day'
+      val = 60*60*24
     end
+    val
   end
   def print_agg_items
-    @agg.items.each do |item|
+    @agg_items.each do |item|
       puts item.time_print #+ ": "
-      item.data.each { |event, count| puts " #{count} #{self.chat_events[event]} "}
+      item.data.each { |event, count| puts " #{count} #{$chat_events[event]} "}
     end
   end 
-end
-end
+  def help_text 
+    puts "Valid commands:\n"
+    puts "history - will show all history of chat"
+    puts "minutes - will show all history of chat by minute"
+    puts "hours - will show all history of chat by hours"
+    puts "days - will show all history of chat by days"
+  end
 end
 

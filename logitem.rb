@@ -6,7 +6,7 @@ class LogItem
   def <=>(other)
     time <=> other.time
   end
-  def initialize(time, data)
+  def initialize(time=0, data={})
     @time = time
     @data = data
   end
@@ -14,14 +14,17 @@ class LogItem
     @time = time
     @data = data
   end
-  def date()
-    DateTime.strptime(@time,'%s')
-  end
+  #def date()
+  #  DateTime.strptime(@time,'%s')
+  #end
   def time()
     Time.at(@time.to_i)
   end
+  def time= time
+    @time = time
+  end
   def time_print(zone=nil)
-    puts self.date()
+    puts self.time
     #puts time
   end
 end
