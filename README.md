@@ -35,5 +35,6 @@ From within the project directory:
 * improve file structure to be cleaner, currently all linked via requires in a single dir
 * package the application more neatly, possibly try creating a gem!
 * improve date handling to be more accomodating of various date format inputs
+* formatting of output to pluralize properly, and output proper english sentences
 thank you
 ================
