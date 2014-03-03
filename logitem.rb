@@ -6,7 +6,7 @@ class LogItem
   def <=>(other)
     time <=> other.time
   end
-  def initialize(time=0, data={})
+  def initialize(time=Time.new, data={})
     @time = time
     @data = data
   end
@@ -23,8 +23,12 @@ class LogItem
   def time= time
     @time = time
   end
-  def time_print(zone=nil)
-    puts self.time
+  def time_print(unit=nil)
+    if unit == 'hour'
+      print self.time.strftime("%b %d %I%p")
+    end
+    print self.time.strftime("%b %d %I:%M%p")
+
     #puts time
   end
 end

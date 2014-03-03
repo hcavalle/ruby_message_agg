@@ -18,10 +18,10 @@ class UserInteract
         when /\Ahelp\z/i
           puts @chatlog.help_text
         when /\Ahistory\z/i
-          puts "no history"
           @chatlog.print_log
-        when /\Aminutes\z/i
-          @chatlog.agg_items_by_time 'minute'
+        when /\Aaggregate\z/i
+          @chatlog.agg_items_by_time *params
+          @chatlog.print_agg_items
         when /\Aexit\z/i
           exit
         else
