@@ -14,9 +14,6 @@ class LogItem
     @time = time
     @data = data
   end
-  #def date()
-  #  DateTime.strptime(@time,'%s')
-  #end
   def time()
     Time.at(@time.to_i)
   end

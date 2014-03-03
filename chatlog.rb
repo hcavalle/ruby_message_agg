@@ -4,8 +4,12 @@ class ChatLog < Log
   $chat_events = {"enter-room" => "person(s) entered room", "leave-room"=> "person(s) left the room", "comment"=>"comment(s)", "high-five"=>"high five(s) between users"}
   $units_time = {"minute"=> 60, "hour"=> 60*60, "day" => 60*60*24}
 
-  def initialize
-    self.seed_data
+  def initialize(*args)
+    if (args.length > 0)
+      super *args
+    else
+      self.seed_data
+    end
   end
 
   def seed_data
@@ -35,7 +39,7 @@ class ChatLog < Log
   end
 
   def agg_items_by_time(unit='minute')
-    @unit_time = unit
+    @unit_time= unit
     if @unit_time
       @agg_items = []
       time_agg = set_time_agg()
@@ -48,17 +52,13 @@ class ChatLog < Log
     if cur_agg_item.time
       @log_item_list.each do |item|
         if time_agg
-          puts "time agg:#{time_agg}"
-          puts item.inspect
-
           if item.time.to_i - cur_agg_item.time.to_i > time_agg
             @agg_items.push(cur_agg_item)
             cur_agg_item = LogItem.new
             cur_agg_item.time= item.time
-            #puts cur_agg_item.time #+ ": "
           end
-          if cur_agg_item.data[item.data["event"]].instance_of? Integer  
-            cur_agg_item.data[item.data["event"]]+= 1 
+          if cur_agg_item.data[item.data["event"]] == 1  
+            cur_agg_item.data[item.data["event"]] += 1 
           else 
             cur_agg_item.data[item.data["event"]]= 1
           end
@@ -67,7 +67,8 @@ class ChatLog < Log
     end
     @agg_items.push(cur_agg_item)
   end
-  def set_time_agg()
+  def set_time_agg(unit=nil)
+    @unit_time= unit if unit != nil
     val = $units_time[@unit_time]
     val
   end

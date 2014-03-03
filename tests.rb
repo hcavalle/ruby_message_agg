@@ -35,7 +35,6 @@ class LogItemTest < TestChatLog #Test::Unit::TestCase
     @item.set(time, data)
 
     assert_equal @item.time, Time.at(time.to_i)
-    #assert_equal @item.date, DateTime.strptime(time,'%s')
     assert_equal @item.data, data
   end
 end
@@ -65,7 +64,6 @@ class LogTest < TestChatLog
   end
   def test_print_log
     self.init_log_list
-    #message = ""
     assert_output { @_log.print_log }
   end
 end

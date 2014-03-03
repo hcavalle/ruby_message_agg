@@ -22,6 +22,15 @@ class UserInteract
         when /\Aaggregate\z/i
           @chatlog.agg_items_by_time *params
           @chatlog.print_agg_items
+        when /\Aminute\z/i
+          @chatlog.agg_items_by_time 'minute'
+          @chatlog.print_agg_items
+        when /\Ahour\z/i
+          @chatlog.agg_items_by_time 'hour'
+          @chatlog.print_agg_items
+        when /\Aday\z/i
+          @chatlog.agg_items_by_time 'day'
+          @chatlog.print_agg_items
         when /\Aexit\z/i
           exit
         else
