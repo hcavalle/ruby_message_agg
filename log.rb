@@ -4,11 +4,11 @@ class Log
 
   def initialize(*args)
     @log_item_list = [*args] 
-    @log_item_list.sort
+    @log_item_list.sort!
   end
   def log_item_list=(items)
     @log_item_list =  items
-    @log_item_list.sort
+    #@log_item_list.sort!
   end
   def log_item_list
     @log_item_list
@@ -18,8 +18,9 @@ class Log
   end
   def print_log(unit=nil)
     @log_item_list.each do |item|
-      puts item.time_print #+ ": "
-      item.data.each { |text| puts " #{text} "}
+      print"#{item.time_print}: "
+      item.data.each { |key, val| print " #{val} "}
+      puts "\n"
     end
   end
 end

@@ -30,6 +30,7 @@ class ChatLog < Log
     item4 = LogItem.new($time4, $data4)
     item5 = LogItem.new($time5, $data5)
     @log_item_list= item1, item2, item3, item4, item5
+    @log_item_list.sort!
 
   end
 
@@ -47,8 +48,12 @@ class ChatLog < Log
     if cur_agg_item.time
       @log_item_list.each do |item|
         if time_agg
-          if item.time - cur_agg_item.time < time_agg
+          puts "time agg:#{time_agg}"
+          puts item.inspect
+
+          if item.time.to_i - cur_agg_item.time.to_i > time_agg
             @agg_items.push(cur_agg_item)
+            cur_agg_item = LogItem.new
             cur_agg_item.time= item.time
             #puts cur_agg_item.time #+ ": "
           end
@@ -68,8 +73,7 @@ class ChatLog < Log
   end
   def print_agg_items
     @agg_items.each do |item|
-      puts item.inspect
-      puts" #{item.time_print()}:"
+      puts" #{item.time_print(@unit_time)}:"
       item.data.each { |event, count| puts " #{count} #{$chat_events[event]} "}
       puts "\n"
     end
@@ -80,7 +84,7 @@ class ChatLog < Log
     puts "aggregate ['minute', 'hour', 'day']- will show all history of chat by unit of time given as parameter"
     puts "minute- will show all history of chat by minute"
     puts "hour- will show all history of chat by hours"
-    #puts "days - will show all history of chat by days"
+    puts "days - will show all history of chat by days"
   end
 end
 

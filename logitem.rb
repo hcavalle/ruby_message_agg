@@ -23,12 +23,13 @@ class LogItem
   def time= time
     @time = time
   end
-  def time_print(unit=nil)
+  def time_print(unit='minute')
     if unit == 'hour'
       print self.time.strftime("%b %d %I%p")
+    elsif unit == 'minute'
+      print self.time.strftime("%b %d %I:%M%p")
+    elsif unit == 'day'
+      print self.time.strftime("%b %d")
     end
-    print self.time.strftime("%b %d %I:%M%p")
-
-    #puts time
   end
 end
